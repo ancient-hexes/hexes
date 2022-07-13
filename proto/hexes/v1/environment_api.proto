@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package hexes.v1;
+
+import "hexes/v1/env.proto";
+
+
+service EnvironmentAPI {
+    rpc List (Environment.ListRequest) returns (stream Environment.ListResponse);
+}

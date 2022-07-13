@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package hexes.v1;
+
+
+message Terrain {
+    enum Type {
+        TYPE_UNSPECIFIED = 0;
+        TYPE_GRASS = 1;
+        TYPE_HIGHLANDS = 2;
+        TYPE_DIRT = 3;
+        TYPE_LAVA = 4;
+        TYPE_SUBTERRANEAN = 5;
+        TYPE_ROCK = 6;
+        TYPE_ROUGH = 7;
+        TYPE_WASTELAND = 8;
+        TYPE_SAND = 9;
+        TYPE_SNOW = 10;
+        TYPE_SWAMP = 11;
+        TYPE_WATER = 12;
+    }
+
+    Terrain.Type type = 1;
+
+    // A movement penalty for a given terrain without a road.
+    double movement_penalty = 2;
+}

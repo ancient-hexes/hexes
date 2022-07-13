@@ -1,0 +1,88 @@
+syntax = "proto3";
+
+package hexes.v1;
+
+import "hexes/v1/coordinate.proto";
+import "hexes/v1/tile.proto";
+
+
+message Map {
+    message Object {
+        message Type {
+            // e.g. `Base/CreatureBanks/DragonFlyHive`
+            string id = 1;
+
+            // Object size in tiles.
+            // e.g. an object with height = 2, width = 3 would look like this:
+            //  |   |   |   |   |   |
+            //  |   | x | x | x |   |
+            //  |   | x | x | x |   |
+            //  |   |   |   |   |   |
+            //
+            // The minimum value for both is 1.
+            uint32 height = 2;
+            uint32 width = 3;
+
+            // Coordinates relative to object's bottom left corner.
+            // Describe a complex shapes.
+            // For example, here's Dragon Utopia (height = 3, width = 6):
+            //  |   |   |   |   |   |   |   |   |
+            //  |   |   |   | x | x | x | x |   |
+            //  |   | x | x | x | x | x |   |   |
+            //  |   |   |   | x | x | x |   |   |
+            //  |   |   |   |   |   |   |   |   |
+            //
+            //  [
+            //      [0, 1],
+            //      [1, 1],
+            //      [2, 0], [2, 1], [2, 2],
+            //      [3, 0], [3, 1], [3, 2],
+            //      [4, 0], [4, 1], [4, 2],
+            //      [5, 2],
+            //  ]
+            //
+            // If not set, objects takes all tiles within its dimensions.
+            repeated Coordinate shape = 4;
+
+            // A coordinate relative to object's bottom left corner.
+            // e.g. for object with height = 2, width = 3 an entrance could be:
+            //  – [0, 0] // bottom left
+            //  – [1, 0] // bottom center
+            //  – [2, 0] // bottom right
+            //  – [0, 1] // top left
+            //  – [1, 1] // top center
+            //  – [2, 1] // top right
+            //
+            // For example, here's an object with [1, 0] entrance:
+            //  |   |   |   |   |   |
+            //  |   | x | x | x |   |
+            //  |   | x | E | x |   |
+            //  |   |   |   |   |   |
+            //
+            // Entrance is optional.
+            Coordinate entrance = 5;
+        }
+
+        // A reference to `Map.Object.Type.id`.
+        string type = 1;
+
+        // A coordinate of bottom left tile.
+        Coordinate coordinate = 2;
+    }
+
+    // Describes how the map was generated.
+    message GenerationSpec {
+        // Random seed, only set for randomly generated maps.
+        uint64 seed = 1;
+
+        // Filename of the template used for generation.
+        string template = 2;
+
+        // Template file hash (MD5).
+        string template_hash = 3;
+    }
+
+    Map.GenerationSpec generation = 1;
+    repeated Tile tiles = 2;
+    repeated Map.Object objects = 3;
+}

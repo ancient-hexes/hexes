@@ -1,0 +1,12 @@
+version: v1
+managed:
+  enabled: true
+  go_package_prefix:
+    default: github.com/ancient-hexes/proto
+plugins:
+  - remote: buf.build/protocolbuffers/plugins/go
+    out: generated/go
+  - remote: buf.build/grpc/plugins/go
+    out: generated/go
+  - remote: buf.build/stephenh/plugins/ts-proto
+    out: generated/ts

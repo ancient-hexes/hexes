@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package hexes.v1;
+
+
+message PayloadChat {
+    string text = 1;
+    bool allies_only = 2;
+}

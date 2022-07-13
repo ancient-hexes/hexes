@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package hexes.v1;
+
+import "hexes/v1/color.proto";
+import "hexes/v1/coordinate.proto";
+import "hexes/v1/road.proto";
+import "hexes/v1/terrain.proto";
+
+
+message Tile {
+    // A coordinate relative to map's bottom left corner.
+    Coordinate coordinate = 1;
+
+    // Reference to `Terrain.type`.
+    Terrain.Type terrain = 2;
+
+    // Reference to `Road.type`.
+    Road.Type road = 3;
+
+    // A list of players who can view & inspect the tile.
+    repeated Color visible_to = 4;
+}

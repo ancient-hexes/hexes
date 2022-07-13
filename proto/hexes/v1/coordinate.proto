@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package hexes.v1;
+
+
+message Coordinate {
+    uint32 x = 1;
+    uint32 y = 2;
+    uint32 z = 3;
+}

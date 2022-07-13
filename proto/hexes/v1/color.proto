@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package hexes.v1;
+
+
+enum Color {
+    COLOR_UNSPECIFIED = 0;
+    COLOR_RED = 1;
+    COLOR_BLUE = 2;
+    COLOR_TAN = 3;
+    COLOR_GREEN = 4;
+    COLOR_ORANGE = 5;
+    COLOR_PURPLE = 6;
+    COLOR_TEAL = 7;
+    COLOR_PINK = 8;
+}

@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package hexes.v1;
+
+
+message Road {
+    enum Type {
+        TYPE_UNSPECIFIED = 0;
+        TYPE_DIRT = 1;
+        TYPE_GRAVEL = 2;
+        TYPE_COBBLESTONE = 3;
+        TYPE_FAVORABLE_WINDS = 4;
+    }
+
+    Road.Type type = 1;
+
+    // Amount of move points required to move from adjacent tile.
+    uint32 base_cost = 2;
+
+    // `base_cost` * 1.41 (rounded)
+    uint32 diagonal_cost = 3;
+}
