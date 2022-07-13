@@ -10,6 +10,7 @@ export interface Map {
   generation: Map_GenerationSpec | undefined;
   tiles: Tile[];
   objects: Map_Object[];
+  objectTypes: { [key: string]: Map_Object_Type };
 }
 
 export interface Map_Object {
@@ -87,8 +88,13 @@ export interface Map_GenerationSpec {
   templateHash: string;
 }
 
+export interface Map_ObjectTypesEntry {
+  key: string;
+  value: Map_Object_Type | undefined;
+}
+
 function createBaseMap(): Map {
-  return { generation: undefined, tiles: [], objects: [] };
+  return { generation: undefined, tiles: [], objects: [], objectTypes: {} };
 }
 
 export const Map = {
@@ -105,6 +111,12 @@ export const Map = {
     for (const v of message.objects) {
       Map_Object.encode(v!, writer.uint32(26).fork()).ldelim();
     }
+    Object.entries(message.objectTypes).forEach(([key, value]) => {
+      Map_ObjectTypesEntry.encode(
+        { key: key as any, value },
+        writer.uint32(34).fork()
+      ).ldelim();
+    });
     return writer;
   },
 
@@ -127,6 +139,12 @@ export const Map = {
         case 3:
           message.objects.push(Map_Object.decode(reader, reader.uint32()));
           break;
+        case 4:
+          const entry4 = Map_ObjectTypesEntry.decode(reader, reader.uint32());
+          if (entry4.value !== undefined) {
+            message.objectTypes[entry4.key] = entry4.value;
+          }
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -146,6 +164,14 @@ export const Map = {
       objects: Array.isArray(object?.objects)
         ? object.objects.map((e: any) => Map_Object.fromJSON(e))
         : [],
+      objectTypes: isObject(object.objectTypes)
+        ? Object.entries(object.objectTypes).reduce<{
+            [key: string]: Map_Object_Type;
+          }>((acc, [key, value]) => {
+            acc[key] = Map_Object_Type.fromJSON(value);
+            return acc;
+          }, {})
+        : {},
     };
   },
 
@@ -167,6 +193,12 @@ export const Map = {
     } else {
       obj.objects = [];
     }
+    obj.objectTypes = {};
+    if (message.objectTypes) {
+      Object.entries(message.objectTypes).forEach(([k, v]) => {
+        obj.objectTypes[k] = Map_Object_Type.toJSON(v);
+      });
+    }
     return obj;
   },
 
@@ -179,6 +211,14 @@ export const Map = {
     message.tiles = object.tiles?.map((e) => Tile.fromPartial(e)) || [];
     message.objects =
       object.objects?.map((e) => Map_Object.fromPartial(e)) || [];
+    message.objectTypes = Object.entries(object.objectTypes ?? {}).reduce<{
+      [key: string]: Map_Object_Type;
+    }>((acc, [key, value]) => {
+      if (value !== undefined) {
+        acc[key] = Map_Object_Type.fromPartial(value);
+      }
+      return acc;
+    }, {});
     return message;
   },
 };
@@ -435,6 +475,80 @@ export const Map_GenerationSpec = {
   },
 };
 
+function createBaseMap_ObjectTypesEntry(): Map_ObjectTypesEntry {
+  return { key: "", value: undefined };
+}
+
+export const Map_ObjectTypesEntry = {
+  encode(
+    message: Map_ObjectTypesEntry,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.key !== "") {
+      writer.uint32(10).string(message.key);
+    }
+    if (message.value !== undefined) {
+      Map_Object_Type.encode(message.value, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: _m0.Reader | Uint8Array,
+    length?: number
+  ): Map_ObjectTypesEntry {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMap_ObjectTypesEntry();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.key = reader.string();
+          break;
+        case 2:
+          message.value = Map_Object_Type.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): Map_ObjectTypesEntry {
+    return {
+      key: isSet(object.key) ? String(object.key) : "",
+      value: isSet(object.value)
+        ? Map_Object_Type.fromJSON(object.value)
+        : undefined,
+    };
+  },
+
+  toJSON(message: Map_ObjectTypesEntry): unknown {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = message.key);
+    message.value !== undefined &&
+      (obj.value = message.value
+        ? Map_Object_Type.toJSON(message.value)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<Map_ObjectTypesEntry>, I>>(
+    object: I
+  ): Map_ObjectTypesEntry {
+    const message = createBaseMap_ObjectTypesEntry();
+    message.key = object.key ?? "";
+    message.value =
+      object.value !== undefined && object.value !== null
+        ? Map_Object_Type.fromPartial(object.value)
+        : undefined;
+    return message;
+  },
+};
+
 declare var self: any | undefined;
 declare var window: any | undefined;
 declare var global: any | undefined;
@@ -485,6 +599,10 @@ function longToNumber(long: Long): number {
 if (_m0.util.Long !== Long) {
   _m0.util.Long = Long as any;
   _m0.configure();
+}
+
+function isObject(value: any): boolean {
+  return typeof value === "object" && value !== null;
 }
 
 function isSet(value: any): boolean {

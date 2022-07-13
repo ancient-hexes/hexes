@@ -2,7 +2,7 @@ version: v1
 managed:
   enabled: true
   go_package_prefix:
-    default: github.com/ancient-hexes/proto
+    default: hexes
 plugins:
   - remote: buf.build/protocolbuffers/plugins/go
     out: generated/go

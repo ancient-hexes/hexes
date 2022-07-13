@@ -85,4 +85,5 @@ message Map {
     Map.GenerationSpec generation = 1;
     repeated Tile tiles = 2;
     repeated Map.Object objects = 3;
+    map<string, Map.Object.Type> object_types = 4;
 }
