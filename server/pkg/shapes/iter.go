@@ -1,9 +1,9 @@
 package shapes
 
 import (
-	pb "github.com/ancient-hexes/proto/generated/go/hexes/hexes/v1"
-	"github.com/ancient-hexes/server/pkg/coordinates"
-	objectTypes "github.com/ancient-hexes/server/pkg/object-types"
+	pb "hexes/proto/go/hexes/v1"
+	"hexes/server/pkg/coordinates"
+	objectTypes "hexes/server/pkg/object-types"
 )
 
 func ExtractTileCoordinates(r *objectTypes.Registry, a *pb.Map_Object) []*coordinates.Wrapper {

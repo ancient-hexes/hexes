@@ -1,7 +1,7 @@
 {
-  "name": "vite-template-solid",
-  "version": "0.0.0",
-  "description": "",
+  "name": "hexes-web",
+  "version": "0.0.1",
+  "description": "Ancient Hexes WebUI",
   "scripts": {
     "start": "vite",
     "dev": "vite",
@@ -15,6 +15,10 @@
     "vite-plugin-solid": "^2.2.6"
   },
   "dependencies": {
+    "long": "^5.2.0",
+    "nice-grpc-web": "^1.1.0",
+    "protobufjs": "^7.0.0",
+    "rxjs": "^7.5.6",
     "solid-js": "^1.4.2"
   }
 }

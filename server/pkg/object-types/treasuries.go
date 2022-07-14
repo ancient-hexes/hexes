@@ -1,7 +1,7 @@
 package objectTypes
 
 import (
-	pb "github.com/ancient-hexes/proto/generated/go/hexes/hexes/v1"
+	pb "hexes/proto/go/hexes/v1"
 )
 
 var Treasuries = []*pb.Map_Object_Type{

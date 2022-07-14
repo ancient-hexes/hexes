@@ -5,9 +5,9 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	pb "github.com/ancient-hexes/proto/generated/go/hexes/hexes/v1"
-	objectTypes "github.com/ancient-hexes/server/pkg/object-types"
-	"github.com/ancient-hexes/server/pkg/shapes"
+	pb "hexes/proto/go/hexes/v1"
+	objectTypes "hexes/server/pkg/object-types"
+	"hexes/server/pkg/shapes"
 )
 
 func TestIntersection(t *testing.T) {

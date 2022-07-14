@@ -2,11 +2,17 @@ version: v1
 managed:
   enabled: true
   go_package_prefix:
-    default: hexes
+    default: go
 plugins:
   - remote: buf.build/protocolbuffers/plugins/go
-    out: generated/go
+    out: .
   - remote: buf.build/grpc/plugins/go
-    out: generated/go
+    out: .
   - remote: buf.build/stephenh/plugins/ts-proto
-    out: generated/ts
+    out: ../web/src/proto
+    opt:
+      - ts_proto_opt=env=node
+      - ts_proto_opt=oneof=unions
+      - ts_proto_opt=unrecognizedEnum=false
+      - ts_proto_opt=enumsAsLiterals=true
+      - ts_proto_opt=outputServices=nice-grpc,outputServices=generic-definitions

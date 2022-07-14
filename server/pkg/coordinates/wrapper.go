@@ -3,7 +3,7 @@ package coordinates
 import (
 	"fmt"
 
-	pb "github.com/ancient-hexes/proto/generated/go/hexes/hexes/v1"
+	pb "hexes/proto/go/hexes/v1"
 )
 
 type Wrapper struct {
