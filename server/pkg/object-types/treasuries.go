@@ -15,8 +15,8 @@ var Treasuries = []*pb.Map_Object_Type{
 			{X: 2, Y: 0}, {X: 2, Y: 1}, {X: 2, Y: 2},
 			{X: 3, Y: 0}, {X: 3, Y: 1}, {X: 3, Y: 2},
 			{X: 4, Y: 0}, {X: 4, Y: 1}, {X: 4, Y: 2},
-			{X: 5, Y: 2},
+			{X: 5, Y: 0},
 		},
-		Entrance: &pb.Coordinate{X: 4, Y: 0},
+		Entrance: &pb.Coordinate{X: 4, Y: 2},
 	},
 }

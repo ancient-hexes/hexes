@@ -1,18 +1,16 @@
 import type { Component } from 'solid-js'
 
-import logo from './logo.svg'
-import styles from './App.module.css'
+import { MapView } from './components/MapView'
+import { generateRandomMap } from './components/MapView/sample'
+import { StatusBar } from './components/StatusBar'
 
-import { MapFetcher } from './components/MapFetcher'
 
 const App: Component = () => {
     return (
-        <div class={ styles.App }>
-            <header class={ styles.header }>
-                <img src={ logo } class={ styles.logo } alt="logo"/>
-            </header>
-            <MapFetcher/>
-        </div>
+        <>
+            <MapView map={ generateRandomMap(64, 64) }/>
+            <StatusBar/>
+        </>
     )
 }
 

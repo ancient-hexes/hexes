@@ -3,6 +3,7 @@ package environmentAPI
 import (
 	"log"
 	"strconv"
+	"time"
 
 	pb "hexes/proto/go/hexes/v1"
 )
@@ -32,6 +33,8 @@ func (s *Service) List(request *pb.Environment_ListRequest, stream pb.Environmen
 		if err := stream.Send(response); err != nil {
 			return err
 		}
+
+		time.Sleep(50 * time.Millisecond)
 	}
 	return nil
 }

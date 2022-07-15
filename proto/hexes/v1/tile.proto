@@ -9,7 +9,7 @@ import "hexes/v1/terrain.proto";
 
 
 message Tile {
-    // A coordinate relative to map's bottom left corner.
+    // A coordinate relative to map's top left corner.
     Coordinate coordinate = 1;
 
     // Reference to `Terrain.type`.

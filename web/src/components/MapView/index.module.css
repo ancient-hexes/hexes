@@ -1,0 +1,7 @@
+.mapView {
+    @apply
+    grid
+    bg-amber-100
+    mb-8 mr-auto ml-auto
+    bg-black
+}

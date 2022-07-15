@@ -11,12 +11,14 @@ export interface Map {
   tiles: Tile[];
   objects: Map_Object[];
   objectTypes: { [key: string]: Map_Object_Type };
+  height: number;
+  width: number;
 }
 
 export interface Map_Object {
   /** A reference to `Map.Object.Type.id`. */
   type: string;
-  /** A coordinate of bottom left tile. */
+  /** A coordinate of top left tile. */
   coordinate: Coordinate | undefined;
 }
 
@@ -36,7 +38,7 @@ export interface Map_Object_Type {
   height: number;
   width: number;
   /**
-   * Coordinates relative to object's bottom left corner.
+   * Coordinates relative to object's top left corner.
    * Describe a complex shapes.
    * For example, here's Dragon Utopia (height = 3, width = 6):
    *  |   |   |   |   |   |   |   |   |
@@ -51,23 +53,23 @@ export interface Map_Object_Type {
    *      [2, 0], [2, 1], [2, 2],
    *      [3, 0], [3, 1], [3, 2],
    *      [4, 0], [4, 1], [4, 2],
-   *      [5, 2],
+   *      [5, 0],
    *  ]
    *
    * If not set, objects takes all tiles within its dimensions.
    */
   shape: Coordinate[];
   /**
-   * A coordinate relative to object's bottom left corner.
+   * A coordinate relative to object's top left corner.
    * e.g. for object with height = 2, width = 3 an entrance could be:
-   *  – [0, 0] // bottom left
-   *  – [1, 0] // bottom center
-   *  – [2, 0] // bottom right
-   *  – [0, 1] // top left
-   *  – [1, 1] // top center
-   *  – [2, 1] // top right
+   *  – [0, 0] // top left
+   *  – [1, 0] // top center
+   *  – [2, 0] // top right
+   *  – [0, 1] // bottom left
+   *  – [1, 1] // bottom center
+   *  – [2, 1] // bottom right
    *
-   * For example, here's an object with [1, 0] entrance:
+   * For example, here's an object with [1, 1] entrance:
    *  |   |   |   |   |   |
    *  |   | x | x | x |   |
    *  |   | x | E | x |   |
@@ -94,7 +96,14 @@ export interface Map_ObjectTypesEntry {
 }
 
 function createBaseMap(): Map {
-  return { generation: undefined, tiles: [], objects: [], objectTypes: {} };
+  return {
+    generation: undefined,
+    tiles: [],
+    objects: [],
+    objectTypes: {},
+    height: 0,
+    width: 0,
+  };
 }
 
 export const Map = {
@@ -117,6 +126,12 @@ export const Map = {
         writer.uint32(34).fork()
       ).ldelim();
     });
+    if (message.height !== 0) {
+      writer.uint32(40).uint32(message.height);
+    }
+    if (message.width !== 0) {
+      writer.uint32(48).uint32(message.width);
+    }
     return writer;
   },
 
@@ -145,6 +160,12 @@ export const Map = {
             message.objectTypes[entry4.key] = entry4.value;
           }
           break;
+        case 5:
+          message.height = reader.uint32();
+          break;
+        case 6:
+          message.width = reader.uint32();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -172,6 +193,8 @@ export const Map = {
             return acc;
           }, {})
         : {},
+      height: isSet(object.height) ? Number(object.height) : 0,
+      width: isSet(object.width) ? Number(object.width) : 0,
     };
   },
 
@@ -199,6 +222,8 @@ export const Map = {
         obj.objectTypes[k] = Map_Object_Type.toJSON(v);
       });
     }
+    message.height !== undefined && (obj.height = Math.round(message.height));
+    message.width !== undefined && (obj.width = Math.round(message.width));
     return obj;
   },
 
@@ -219,6 +244,8 @@ export const Map = {
       }
       return acc;
     }, {});
+    message.height = object.height ?? 0;
+    message.width = object.width ?? 0;
     return message;
   },
 };

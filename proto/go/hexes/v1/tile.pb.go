@@ -25,7 +25,7 @@ type Tile struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	// A coordinate relative to map's bottom left corner.
+	// A coordinate relative to map's top left corner.
 	Coordinate *Coordinate `protobuf:"bytes,1,opt,name=coordinate,proto3" json:"coordinate,omitempty"`
 	// Reference to `Terrain.type`.
 	Terrain Terrain_Type `protobuf:"varint,2,opt,name=terrain,proto3,enum=hexes.v1.Terrain_Type" json:"terrain,omitempty"`

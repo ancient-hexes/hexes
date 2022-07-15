@@ -12,7 +12,7 @@ import * as _m0 from "protobufjs/minimal";
 export const protobufPackage = "hexes.v1";
 
 export interface Tile {
-  /** A coordinate relative to map's bottom left corner. */
+  /** A coordinate relative to map's top left corner. */
   coordinate: Coordinate | undefined;
   /** Reference to `Terrain.type`. */
   terrain: Terrain_Type;

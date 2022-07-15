@@ -1,0 +1,29 @@
+.general {
+    height: 40px;
+
+    @apply
+    absolute bottom-0 right-0
+    cursor-pointer
+}
+
+svg.red > path:nth-child(2) {
+    @apply fill-red-700
+}
+
+svg.red > path:nth-child(3),
+svg.red > path:nth-child(5),
+svg.red > path:nth-child(6),
+svg.red > path:nth-child(10) {
+    @apply fill-red-800
+}
+
+svg.blue > path:nth-child(2) {
+    @apply fill-blue-700
+}
+
+svg.blue > path:nth-child(3),
+svg.blue > path:nth-child(5),
+svg.blue > path:nth-child(6),
+svg.blue > path:nth-child(10) {
+    @apply fill-blue-900
+}

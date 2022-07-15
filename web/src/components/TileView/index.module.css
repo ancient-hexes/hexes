@@ -1,0 +1,57 @@
+.tile {
+    font-size: 10px;
+    box-shadow: inset 0 0 1px black;
+
+    @apply
+    relative
+    flex justify-center items-center
+    select-none
+}
+
+.grass {
+    @apply bg-lime-900
+}
+
+.highlands {
+    @apply bg-lime-800
+}
+
+.dirt {
+    @apply bg-amber-800
+}
+
+.lava {
+    @apply bg-neutral-700
+}
+
+.subterranean {
+    @apply bg-orange-900
+}
+
+.rock {
+    @apply bg-black
+}
+
+.rough {
+    @apply bg-amber-900
+}
+
+.wasteland {
+    @apply bg-amber-600
+}
+
+.sand {
+    @apply bg-yellow-200
+}
+
+.snow {
+    @apply bg-neutral-200
+}
+
+.swamp {
+    @apply bg-lime-900
+}
+
+.water {
+    @apply bg-cyan-600
+}
