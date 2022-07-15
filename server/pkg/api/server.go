@@ -15,6 +15,10 @@ func OriginAllowed(_ string) bool {
 	return true
 }
 
+func WebSocketOriginAllowed(_ *http.Request) bool {
+	return true
+}
+
 func NewServer() *http.Server {
 	grpcServer := grpc.NewServer()
 	pb.RegisterEnvironmentAPIServer(grpcServer, environmentAPI.New())
@@ -23,7 +27,9 @@ func NewServer() *http.Server {
 	httpServer := &http.Server{
 		Handler: grpcweb.WrapServer(
 			grpcServer,
+			grpcweb.WithWebsockets(true),
 			grpcweb.WithOriginFunc(OriginAllowed),
+			grpcweb.WithWebsocketOriginFunc(WebSocketOriginAllowed),
 		),
 	}
 
