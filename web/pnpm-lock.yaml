@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@improbable-eng/grpc-web': ^0.15.0
   autoprefixer: ^10.4.7
   google-protobuf: ^3.14.0
   long: ^5.2.0
@@ -16,6 +17,7 @@ specifiers:
   vite-plugin-solid-svg: ^0.2.0
 
 dependencies:
+  '@improbable-eng/grpc-web': 0.15.0_google-protobuf@3.20.1
   google-protobuf: 3.20.1
   long: 5.2.0
   nice-grpc-web: 1.1.0_google-protobuf@3.20.1
