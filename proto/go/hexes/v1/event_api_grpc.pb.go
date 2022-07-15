@@ -7,7 +7,10 @@
 package hexesv1
 
 import (
+	context "context"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -19,6 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type EventAPIClient interface {
+	Connect(ctx context.Context, opts ...grpc.CallOption) (EventAPI_ConnectClient, error)
 }
 
 type eventAPIClient struct {
@@ -29,10 +33,42 @@ func NewEventAPIClient(cc grpc.ClientConnInterface) EventAPIClient {
 	return &eventAPIClient{cc}
 }
 
+func (c *eventAPIClient) Connect(ctx context.Context, opts ...grpc.CallOption) (EventAPI_ConnectClient, error) {
+	stream, err := c.cc.NewStream(ctx, &EventAPI_ServiceDesc.Streams[0], "/hexes.v1.EventAPI/Connect", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &eventAPIConnectClient{stream}
+	return x, nil
+}
+
+type EventAPI_ConnectClient interface {
+	Send(*Event) error
+	Recv() (*Event, error)
+	grpc.ClientStream
+}
+
+type eventAPIConnectClient struct {
+	grpc.ClientStream
+}
+
+func (x *eventAPIConnectClient) Send(m *Event) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *eventAPIConnectClient) Recv() (*Event, error) {
+	m := new(Event)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // EventAPIServer is the server API for EventAPI service.
 // All implementations must embed UnimplementedEventAPIServer
 // for forward compatibility
 type EventAPIServer interface {
+	Connect(EventAPI_ConnectServer) error
 	mustEmbedUnimplementedEventAPIServer()
 }
 
@@ -40,6 +76,9 @@ type EventAPIServer interface {
 type UnimplementedEventAPIServer struct {
 }
 
+func (UnimplementedEventAPIServer) Connect(EventAPI_ConnectServer) error {
+	return status.Errorf(codes.Unimplemented, "method Connect not implemented")
+}
 func (UnimplementedEventAPIServer) mustEmbedUnimplementedEventAPIServer() {}
 
 // UnsafeEventAPIServer may be embedded to opt out of forward compatibility for this service.
@@ -53,6 +92,32 @@ func RegisterEventAPIServer(s grpc.ServiceRegistrar, srv EventAPIServer) {
 	s.RegisterService(&EventAPI_ServiceDesc, srv)
 }
 
+func _EventAPI_Connect_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(EventAPIServer).Connect(&eventAPIConnectServer{stream})
+}
+
+type EventAPI_ConnectServer interface {
+	Send(*Event) error
+	Recv() (*Event, error)
+	grpc.ServerStream
+}
+
+type eventAPIConnectServer struct {
+	grpc.ServerStream
+}
+
+func (x *eventAPIConnectServer) Send(m *Event) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *eventAPIConnectServer) Recv() (*Event, error) {
+	m := new(Event)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // EventAPI_ServiceDesc is the grpc.ServiceDesc for EventAPI service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -60,6 +125,13 @@ var EventAPI_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "hexes.v1.EventAPI",
 	HandlerType: (*EventAPIServer)(nil),
 	Methods:     []grpc.MethodDesc{},
-	Streams:     []grpc.StreamDesc{},
-	Metadata:    "hexes/v1/event_api.proto",
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "Connect",
+			Handler:       _EventAPI_Connect_Handler,
+			ServerStreams: true,
+			ClientStreams: true,
+		},
+	},
+	Metadata: "hexes/v1/event_api.proto",
 }

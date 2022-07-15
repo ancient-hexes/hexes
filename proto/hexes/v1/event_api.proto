@@ -2,7 +2,9 @@ syntax = "proto3";
 
 package hexes.v1;
 
+import "hexes/v1/event.proto";
+
 
 service EventAPI {
-
+    rpc Connect (stream Event) returns (stream Event);
 }

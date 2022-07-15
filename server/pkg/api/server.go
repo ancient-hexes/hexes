@@ -3,6 +3,8 @@ package api
 import (
 	"net/http"
 
+	eventAPI "hexes/server/pkg/api/event-api"
+
 	"github.com/improbable-eng/grpc-web/go/grpcweb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -22,6 +24,7 @@ func WebSocketOriginAllowed(_ *http.Request) bool {
 func NewServer() *http.Server {
 	grpcServer := grpc.NewServer()
 	pb.RegisterEnvironmentAPIServer(grpcServer, environmentAPI.New())
+	pb.RegisterEventAPIServer(grpcServer, eventAPI.New())
 	reflection.Register(grpcServer)
 
 	httpServer := &http.Server{
